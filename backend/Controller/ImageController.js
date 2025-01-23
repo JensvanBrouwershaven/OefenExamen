@@ -1,7 +1,7 @@
-const Image = require('../Models/ImageModel'); // Assuming you have an Image model
+import Image from '../Models/ImageModel.js'; // Assuming you have an Image model
 
 // GET all images
-const getAllImages = async (req, res) => {
+export const getAllImages = async (req, res) => {
   try {
     const images = await Image.find(); // Fetch images from DB
     res.json({ message: 'Images retrieved successfully', images });
@@ -11,7 +11,7 @@ const getAllImages = async (req, res) => {
 };
 
 // GET image by ID
-const getImageById = async (req, res) => {
+export const getImageById = async (req, res) => {
   try {
     const image = await Image.findById(req.params.id);
     if (!image) {
@@ -23,8 +23,9 @@ const getImageById = async (req, res) => {
   }
 };
 
+
 // POST create a new image (with file upload)
-const createImage = async (req, res) => {
+export const createImage = async (req, res) => {
   const { name } = req.body; // Assuming the name is sent in the body
   const imageUrl = req.file ? req.file.path : null; // Handle file upload
 
@@ -46,7 +47,7 @@ const createImage = async (req, res) => {
 };
 
 // DELETE image by ID
-const deleteImage = async (req, res) => {
+export const deleteImage = async (req, res) => {
   try {
     const image = await Image.findByIdAndDelete(req.params.id);
     if (!image) {
@@ -59,7 +60,7 @@ const deleteImage = async (req, res) => {
 };
 
 // PATCH update image name by ID
-const updateImageName = async (req, res) => {
+export const updateImageName = async (req, res) => {
   const { name } = req.body; // New name for the image
   try {
     const image = await Image.findByIdAndUpdate(
@@ -76,10 +77,3 @@ const updateImageName = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllImages,
-  getImageById,
-  createImage,
-  deleteImage,
-  updateImageName,
-};

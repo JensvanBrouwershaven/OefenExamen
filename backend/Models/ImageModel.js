@@ -1,11 +1,18 @@
-const mongoose = require('mongoose');
+
+import mongoose from 'mongoose'
 
 const ImageSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    imageUrl: { type: String, required: true }, // URL of the image
+    imageUrl: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Image', ImageSchema);
+// Check if the model already exists to avoid OverwriteModelError
+
+const Image = mongoose.model('Image', ImageSchema);
+export default Image;

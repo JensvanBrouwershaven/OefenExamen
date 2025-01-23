@@ -1,40 +1,37 @@
-const express = require('express');
-const multer = require('multer');
-const {
-  getAllImages,
-  getImageById,
-  createImage,
-  deleteImage,
-  updateImageName,
-} = require('../Controller/ImageController'); // Import controller functions
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import {createImage, getAllImages} from '../Controller/ImageController.js';
 
 const router = express.Router();
 
-// Multer setup for file uploads
+// Stel opslaglocatie en bestandsnaam in voor afbeeldingen
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Directory to save uploaded files
+    cb(null, 'uploads'); // Zorg ervoor dat de map 'uploads' bestaat
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Custom file naming
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-const upload = multer({ storage }); // Set up the multer instance for file handling
+// Filter om alleen afbeeldingen te accepteren
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Alleen afbeeldingsbestanden zijn toegestaan!'), false);
+  }
+};
 
-// GET all images
-router.get('/', getAllImages); // Handles getting all images
+// Initialize multer with storage and fileFilter
+const upload = multer({ storage, fileFilter });
 
-// GET a single image by ID
-router.get('/:id', getImageById); // Handles getting a single image by ID
+router.get('/', getAllImages)
 
-// POST a new image (with file upload)
-router.post('/', upload.single('image'), createImage); // Handles creating a new image, file upload
+// Use the upload middleware before calling createImage
+router.post('/', upload.single('image'), createImage)
 
-// DELETE an image by ID
-router.delete('/:id', deleteImage); // Handles deleting an image by ID
+// Delete image from the database
 
-// PATCH (update) an image's name by ID
-router.patch('/:id', updateImageName); // Handles updating an image's name
-
-module.exports = router;
+export default router;
