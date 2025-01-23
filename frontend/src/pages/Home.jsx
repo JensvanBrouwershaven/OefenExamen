@@ -28,8 +28,10 @@ const Home = ({ images }) => {
 
   return (
     <div className="home">
-      <div className="search">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"></link>
+      <div className="search-container">
         <input
+          className='search'
           type="text"
           placeholder="Search images..."
           value={searchTerm}
@@ -38,17 +40,19 @@ const Home = ({ images }) => {
       </div>
 
       <div className="images">
-        {filteredImages.length > 0 ? (
-          filteredImages.map((image) => (
-            <div key={image._id}>
-              <p>{image.name}</p>
-              <img src={`http://localhost:4000/${image.imageUrl}`} alt={image.name} />
-            </div>
-          ))
-        ) : (
-          <p>No images found.</p>
-        )}
+  {filteredImages.length > 0 ? (
+    filteredImages.map((image) => (
+      <div key={image._id} className="image-card">
+        <p className="image-name">{image.name}</p>
+        <img className="image" src={`http://localhost:4000/${image.imageUrl}`} alt={image.name} />
+
       </div>
+    ))
+  ) : (
+    <p>No images found.</p>
+  )}
+</div>
+
     </div>
   );
 };

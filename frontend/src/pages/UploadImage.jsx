@@ -1,12 +1,21 @@
 import { useState } from 'react';
+import '../index.css';
 
 const UploadImage = () => {
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState('');
   const [message, setMessage] = useState('');
+  const [preview, setPreview] = useState(null);
+  const [isFileSelected, setIsFileSelected] = useState(false);
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setImage(file);
+    setIsFileSelected(!!file);  // Update visibility state based on file selection
+    // Generate a preview URL for the selected image
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
   };
 
   const handleNameChange = (e) => {
@@ -48,20 +57,41 @@ const UploadImage = () => {
 
   return (
     <div className="upload-image">
-      <h1>Upload Image</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="image">Select Image:</label>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"></link>
+      <h1 className="upload-title">Upload Image</h1>
+      <form onSubmit={handleSubmit} className="upload-form">
+        <div className="form-group">
+          <label htmlFor="image" className="form-label">Select Image:</label>
+          
+          {/* Hidden file input */}
           <input
             type="file"
             id="image"
             name="image"
             accept="image/*"
             onChange={handleImageChange}
+            className="file-input"
           />
+          
+          {/* Custom label acting as a button */}
+          <label htmlFor="image" className="custom-file-button">
+            Choose file
+          </label>
+
+          {/* Custom "No file chosen" text */}
+          {!isFileSelected && <p className="custom-no-file">No file chosen</p>}
         </div>
-        <div>
-          <label htmlFor="name">Image Name (Optional):</label>
+        
+        {/* Image preview */}
+        {preview && (
+          <div className="image-preview">
+            <h4>Image Preview:</h4>
+            <img src={preview} alt="Selected preview" className="preview-image" />
+          </div>
+        )}
+
+        <div className="form-group">
+          <label htmlFor="name" className="form-label">Image Name (Required):</label>
           <input
             type="text"
             id="name"
@@ -69,11 +99,12 @@ const UploadImage = () => {
             value={imageName}
             onChange={handleNameChange}
             placeholder="Enter image name"
+            className="form-input"
           />
         </div>
-        <button type="submit">Upload</button>
+        <button type="submit" className="submit-button">Upload</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className="status-message">{message}</p>}
     </div>
   );
 };
