@@ -36,6 +36,9 @@ body {
   letter-spacing: 0.1rem;
   font-size: 1.3rem;
 }
+.UploadHomeButton:hover {
+  background-color: rgba(0, 0, 0, 0.7 );
+}
 .HeaderLinkToUpload {
   display: flex;
   justify-content: flex-end;
@@ -54,6 +57,9 @@ body {
   border-radius: 1.5625rem;
   width: 30rem;
   margin: 1rem 0 0 1rem;
+}
+.search-container:hover{
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .search {
@@ -267,6 +273,9 @@ input[type="file"]::-webkit-file-upload-button {
   font-size: 1rem; /* 16px */
   cursor: pointer;
   border-radius: 0.25rem; /* 4px */
+}
+.custom-file-button:hover{
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .custom-no-file {
